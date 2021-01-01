@@ -25,3 +25,7 @@ export async function createTodoItem(
         done: false,
     })
 }
+
+export async function deleteTodoItem(itemId: string, userId: string){
+    return todosAccess.deleteTodoItem(itemId, userId)
+}
