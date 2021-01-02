@@ -5,12 +5,12 @@ import { verify, decode, JwtHeader, SigningKeyCallback, VerifyOptions } from 'js
 import { createLogger } from '../../utils/logger'
 import { Jwt } from '../../auth/Jwt'
 import { JwtPayload } from '../../auth/JwtPayload'
-import { JwksClient } from 'jwks-rsa';
+import * as jwksClient from 'jwks-rsa'
 
 const logger = createLogger('auth')
 
 const jwksUrl = 'https://dev-mkfpq56i.us.auth0.com/.well-known/jwks.json'
-const jwksClient = new JwksClient({jwksUri: jwksUrl});
+const client = jwksClient({jwksUri: jwksUrl});
 
 export const handler = async (
   event: CustomAuthorizerEvent
@@ -66,7 +66,7 @@ async function verifyToken(authHeader: string): Promise<JwtPayload> {
 }
 
 function getSigningKeyForVerification(header: JwtHeader, callback: SigningKeyCallback): void{
-  return jwksClient.getSigningKey(header.kid, function(err, key) {
+  return client.getSigningKey(header.kid, function(err, key) {
     if (err){
       logger.error('GetSigningKeyForVerification has failed:', err)
     }
