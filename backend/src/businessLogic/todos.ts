@@ -34,3 +34,7 @@ export async function deleteTodoItem(itemId: string, userId: string){
 export async function updateTodoItem(itemId: string, userId: string, data: UpdateTodoRequest){
     return todosAccess.updateTodoItem(itemId, userId, data)
 }
+
+export async function setAttachmentUrl(itemId: string, userId: string, attachmentUrl: string): Promise<void> {
+    return todosAccess.setAttachmentUrl(itemId, userId, attachmentUrl)
+}
