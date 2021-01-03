@@ -44,7 +44,7 @@ export class TodosAccess {
             TableName: this.todosTable,
             Key: {
                 todoId: todoId,
-                userId: userId
+                userId: userId,
             }
         }).promise()
     }
@@ -58,7 +58,7 @@ export class TodosAccess {
             },
             UpdateExpression: 'set #name = :name, done = :done, dueDate = :dueDate',
             ExpressionAttributeValues: {
-                ':#name': item.name,
+                ':name': item.name,
                 ':done': item.done,
                 ':dueDate': item.dueDate
             },
