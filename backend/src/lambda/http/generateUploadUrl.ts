@@ -25,13 +25,17 @@ export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEven
     Key: todoId,
     Expires: urlExpiration
   })
-  setAttachmentUrl(
+  await setAttachmentUrl(
     todoId,
     userId,
     `https://${bucketName}.s3.amazonaws.com/${todoId}`
   );
   return {
     statusCode: 200,
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Credentials': true,
+    },
     body: JSON.stringify({
       uploadUrl: url
     })
