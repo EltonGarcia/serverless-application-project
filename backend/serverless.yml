@@ -77,6 +77,7 @@ functions:
           method: post
           path: todos
           authorizer: Auth
+          cors: true
 
   UpdateTodo:
     handler: src/lambda/http/updateTodo.handler
@@ -87,9 +88,10 @@ functions:
         Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TODOS_TABLE}
     events:
       - http:
-          method: put
+          method: patch
           path: todos/{todoId}
           authorizer: Auth
+          cors: true
 
   DeleteTodo:
     handler: src/lambda/http/deleteTodo.handler
@@ -103,6 +105,7 @@ functions:
           method: delete
           path: todos/{todoId}
           authorizer: Auth
+          cors: true
 
   GenerateUploadUrl:
     handler: src/lambda/http/generateUploadUrl.handler
