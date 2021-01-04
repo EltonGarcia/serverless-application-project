@@ -4,9 +4,11 @@ service:
 plugins:
   - serverless-webpack
   - serverless-iam-roles-per-function
+  - serverless-reqvalidator-plugin
+  - serverless-aws-documentation
 
-# package:
-#   individually: true
+package:
+  individually: true
 
 provider:
   name: aws
@@ -40,6 +42,20 @@ provider:
 custom:
   serverless-iam-roles-per-function:
     defaultInherit: true
+
+  documentation:
+    api:
+      info:
+        version: v1.0.0
+        title: Serverless todo
+        description: Serverless todo application
+    models:
+      - name: CreateTodoValidation
+        contentType: application/json
+        schema: ${file(src/requests/validations/create-todo-request.json)}
+      - name: UpdateTodoValidation
+        contentType: application/json
+        schema: ${file(src/requests/validations/update-todo-request.json)}
 
 functions:
   Auth:
@@ -78,6 +94,12 @@ functions:
           path: todos
           authorizer: Auth
           cors: true
+          reqValidatorName: RequestBodyValidator
+          documentation:
+            summary: Create a new todo item
+            description: Create a new todo item
+            requestModels:
+              'application/json': CreateTodoValidation
 
   UpdateTodo:
     handler: src/lambda/http/updateTodo.handler
@@ -92,6 +114,12 @@ functions:
           path: todos/{todoId}
           authorizer: Auth
           cors: true
+          reqValidatorName: RequestBodyValidator
+          documentation:
+            summary: Update a todo item
+            description: Update a todo item
+            requestModels:
+              'application/json': UpdateTodoValidation
 
   DeleteTodo:
     handler: src/lambda/http/deleteTodo.handler
